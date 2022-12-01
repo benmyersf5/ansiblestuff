@@ -1,0 +1,21 @@
+---
+- name: Upload software iso file
+  hosts: bigips
+  gather_facts: no
+  connection: local
+  
+  tasks:
+    - name: Upload absolute image to the BIG-IP
+      bigip_software_image:
+        image: /var/tmp/BIGIP-17.0.0-0.0.22.iso  
+        provider: "{{ provider }}"
+      tags: upload
+    
+    - name: Install and active software
+      bigip_software_install:
+        image: BIGIP-17.0.0-0.0.22.iso
+        state: installed
+        volume: HD1.2
+        provider: "{{ provider }}"
+      tags: install
+    

@@ -1,0 +1,25 @@
+---
+- name: GRAB F5 FACTS
+  hosts: bigips
+  connection: local
+  gather_facts: yes
+
+  vars_prompt:
+   
+    - name: data_entity
+      prompt: "What data do you want?"
+      private: no
+
+  tasks:
+   
+    - name: COLLECT BIG-IP FACTS
+      bigip_device_info:
+        provider: "{{provider}}"
+        gather_subset:
+          - "{{data_entity}}"
+      register: device_facts
+
+    - name: Copy output to file
+      copy:
+        content: "{{ device_facts }}"
+        dest: "/var/tmp/{{ inventory_hostname }}_facts.json"

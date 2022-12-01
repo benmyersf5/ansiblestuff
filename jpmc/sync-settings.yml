@@ -1,0 +1,24 @@
+---
+- name: Enable/Disable sync
+  hosts: dns
+  gather_facts: no
+  connection: local
+  
+  tasks:
+   - name: Disable Sync
+     bigip_gtm_global:
+       synchronization: no
+       synchronization_group_name: "{{ synchronization_group_name }}"
+       synchronize_zone_files: no
+       state: present
+       provider: "{{ provider }}"
+     tags: disable
+  
+   - name: Enable Sync
+     bigip_gtm_global:
+       synchronization: yes
+       synchronization_group_name: "{{ synchronization_group_name }}"
+       synchronize_zone_files: yes
+       state: present
+       provider: "{{ provider }}"
+     tags: enable

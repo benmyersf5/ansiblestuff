@@ -1,0 +1,22 @@
+---
+- name: 
+  gather_facts: no
+  hosts: bigips
+  connection: local
+  
+  tasks: 
+   - name: disable snmp traps
+     bigip_snmp:
+       agent_authentication_traps: disabled
+       agent_status_traps: disabled
+       device_warning_traps: disabled
+       provider: "{{ provider }}"
+     tags: trap_disable
+     
+   - name: enable snmp traps
+     bigip_snmp: 
+       agent_authentication_traps: enabled
+       agent_status_traps: enabled
+       device_warning_traps: enabled
+       provider: "{{ provider }}"
+     tags: trap_enable

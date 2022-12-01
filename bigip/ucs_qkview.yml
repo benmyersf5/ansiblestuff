@@ -1,0 +1,35 @@
+---
+
+- name: Play 1 Create Qkview
+  gather_facts: no
+  hosts: bigips
+  connection: local
+  
+  tasks:
+   - name: Generate and download qkview.
+     bigip_qkview:
+       dest: /tmp/{{ device_hostname }}.qkview
+       provider: "{{ provider }}"
+     tags: qkview
+     
+- name: Play 2 ucs files
+  gather_facts: no
+  hosts: bigips
+  connection: local
+  
+  tasks:
+   - name: Create ucs file and download
+     bigip_ucs_fetch:
+       create_on_missing: yes
+       src: "{{ device_hostname }}.ucs"
+       dest: /tmp/{{ device_hostname }}.ucs
+       provider: "{{ provider }}"
+     tags: ucs
+   
+   - name: remove ucs created in previous task
+     bigip_ucs:
+       ucs: "{{ device_hostname }}.ucs"
+       state: absent
+       provider: "{{ provider }}"
+     tags: ucs
+     

@@ -1,0 +1,22 @@
+---
+- hosts: bigips
+  tasks:
+   - name: Collect all BIG-IP information
+     bigip_device_info:
+       gather_subset:
+        - gtm-pools
+       provider: "{{ provider }}"
+     register: pools
+     delegate_to: localhost
+   - debug:
+       msg: "{{ pools }}"
+       
+   - name: Extracting the status of the pools
+     set_fact:
+       pool_statuses: "{{ pool_statuses|default({}) | combine({item.name:item.availability_status})}}"
+     loop: "{{ pools.gtm_pools }}"
+     
+   - name: Copy output to file
+     copy:
+       content: "{{ pool_statuses }}"
+       dest: "/var/tmp/{{ inventory_hostname }}.json"

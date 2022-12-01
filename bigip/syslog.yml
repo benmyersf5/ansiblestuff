@@ -1,0 +1,11 @@
+---
+- name: create remove syslog setttings
+  hosts: bigips
+  connection: local
+  
+  tasks:
+   - name: configure graylog logging
+     bigip_remote_syslog:
+       remote_host: "{{ syslog_server }}"
+       remote_port: "{{ syslog_port }}"
+       provider: "{{ provider }}"

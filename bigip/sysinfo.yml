@@ -1,0 +1,13 @@
+---
+- hosts: bigips
+  tasks:
+  - name: Collect all BIG-IP information
+    bigip_device_info:
+      gather_subset:
+        - gtm-wide-ips
+        - gtm-pools
+        - gtm-servers
+        - self-ips
+        - virtual-servers
+      provider: "{{ provider }}"
+    delegate_to: localhost

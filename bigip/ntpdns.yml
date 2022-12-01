@@ -1,0 +1,37 @@
+---
+- name: Set up hostname, NTP servers, and DNS servers.
+  hosts: bigips
+  connection: local
+
+  tasks:
+    - name: Set hostname
+      bigip_hostname:
+        hostname: "{{ device_hostname }}"
+        provider: "{{ provider }}"
+      tags: hostname
+      
+    - name: Configure NTP Servers & Timezone
+      bigip_device_ntp:
+        ntp_servers:
+          - "{{ ntp_source }}"
+        timezone: America/New_York
+        provider: "{{ provider }}"
+      tags: ntp
+
+    - name: Configure DNS Servers
+      bigip_device_dns:
+        name_servers:
+          - "{{ dns1 }}"
+          - "{{ dns2 }}"
+        provider: "{{ provider }}"
+      tags: dns
+    
+    - name: Set default route.
+      bigip_static_route:
+        destination: 0.0.0.0
+        netmask: 0.0.0.0
+        gateway_address: 10.0.0.1
+        name: default
+        provider: "{{ provider }}"
+      tags: routing
+

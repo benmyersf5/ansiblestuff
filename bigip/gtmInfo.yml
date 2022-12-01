@@ -1,0 +1,12 @@
+---
+- hosts: bigips
+  tasks:
+  - name: Collect all BIG-IP information
+    bigip_device_info:
+      gather_subset:
+        - gtm-pools
+      provider: "{{ provider }}"
+    register: gtmStuff
+    delegate_to: localhost
+  - debug: 
+       msg: "{{ gtmStuff }}"

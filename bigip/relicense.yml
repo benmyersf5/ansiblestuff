@@ -1,0 +1,12 @@
+---
+- hosts: bigips
+  connection: local
+  
+  tasks:
+   - name: Relicense bigip 
+     bigip_device_license:
+       force: yes
+       license_key: "M4792-56348-02237-65326-2133316"
+       accept_eula: yes
+       provider: "{{ provider }}"
+       

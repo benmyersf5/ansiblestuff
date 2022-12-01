@@ -1,0 +1,14 @@
+---
+- hosts: bigipdns
+  tasks:
+   - name: Collect all BIG-IP information
+     bigip_device_info:
+       gather_subset:
+        - gtm-wide-ips
+        - gtm-pools
+        - gtm-servers
+        - software-volumes        
+       provider: "{{ provider }}"
+     register: output
+     delegate_to: localhost
+   - debug: var=output.ansible_facts.ansible_net_gtm_a_pools.members

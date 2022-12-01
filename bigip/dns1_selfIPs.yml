@@ -1,0 +1,39 @@
+---
+- name: Configure bigip1 self IPs
+  hosts: bigips
+  connection: local
+  tasks:
+  
+   - name: access non-floating IP
+     bigip_selfip: 
+       address: 10.0.1.{{ dns1_last_oct }}
+       name: access_NF_IP
+       state: present
+       netmask: 255.255.254.0
+       vlan: access
+       allow_service: default
+       traffic_group: traffic-group-local-only
+       provider: "{{ provider }}"
+     
+   - name: vmnet2 non-floating IP
+     bigip_selfip: 
+       address: 10.2.0.{{ dns1_last_oct }}
+       name: vmnet2_NF_IP
+       state: present
+       netmask: 255.255.255.0
+       vlan: vmnet2
+       allow_service: default
+       traffic_group: traffic-group-local-only
+       provider: "{{ provider }}"
+     
+   - name: vmnet4 non-floating IP
+     bigip_selfip: 
+       address: 10.4.0.{{ dns1_last_oct }}
+       name: vmnet4_NF_IP
+       state: present
+       netmask: 255.255.255.0
+       vlan: vmnet4
+       allow_service: default
+       traffic_group: traffic-group-local-only
+       provider: "{{ provider }}"
+     

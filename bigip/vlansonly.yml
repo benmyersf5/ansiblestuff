@@ -1,0 +1,27 @@
+---
+- name: Create vlans and apply to interfaces.
+  hosts: bigips 
+  connection: local
+  
+  tasks:
+   - name: Create access vlan
+     bigip_vlan:
+       untagged_interface: 1.1
+       name: access
+       tag: 5
+       provider: "{{ provider }}"
+     
+   - name: Create vmnet2 vlan
+     bigip_vlan:
+       untagged_interface: 1.2
+       name: vmnet2
+       tag: 20
+       provider: "{{ provider }}"
+   
+   - name: Create vmnet4 vlan
+     bigip_vlan:
+       untagged_interface: 1.3
+       name: vmnet4
+       tag: 40
+       provider: "{{ provider }}"
+       

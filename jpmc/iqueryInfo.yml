@@ -1,0 +1,28 @@
+---
+- name: Gather GTM iQuery data (test)
+  hosts: bigips
+  gather_facts: yes
+  tasks: 
+   - name: tmsh show gtm iquery
+     shell:
+       cmd: tmsh show gtm iquery |awk 'tolower($1)~/(state|reconnects)/ || tolower($1)~/(server|configuration|local)/ && tolower($2)!~/(type|commit|tmos)/{print $0}  tolower($0)~/local big3d version/{print RS}'
+     register: iqueryOut
+   - debug: var=iqueryOut.stdout_lines
+   
+   - name: Copy iQuery output to a file.
+     copy:
+       content: "{{ iqueryOut.stdout_lines | to_nice_json(indent=1) }}"
+       dest: "/var/tmp/{{ inventory_hostname }}_iQuery.txt"
+   
+   - name: Data file clean up.
+     replace:
+        path: /var/tmp/{{ inventory_hostname }}_iQuery.txt
+        regexp: '[\"|,|\\]|\[|\]]'
+    
+   - name: Fetch data files.
+     fetch:
+        src: /var/tmp/{{ inventory_hostname }}_iQuery.txt
+        dest: /home/ansible/outputs/
+        flat: yes
+     
+       

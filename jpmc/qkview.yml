@@ -1,0 +1,12 @@
+---
+- name: Create Qkview
+  gather_facts: no
+  hosts: bigips
+  connection: local
+  
+  tasks:
+   - name: Generate and download qkview.
+     bigip_qkview:
+       dest: /var/tmp/{{ device_hostname }}.qkview
+       provider: "{{ provider }}"
+     tags: qkview

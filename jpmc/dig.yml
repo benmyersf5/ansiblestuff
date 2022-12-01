@@ -1,0 +1,11 @@
+---
+- name: Dig
+  hosts: localhost regulus
+  gather_facts: no
+  connection: local
+  
+  
+  tasks:
+    - name: A record lookup 
+      debug:
+        msg: "{{ lookup('dig', 'algol.bigiplab.local.', '@10.0.0.253' )}}"
