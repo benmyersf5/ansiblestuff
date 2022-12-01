@@ -10,9 +10,10 @@
     
     - name: Print results
       debug:
-        var: results
+        var: results.stdout_lines
         
     - name: Copy output to file
+      connection: local
       copy:
        content: "{{ results | to_nice_json(indent=2) }}"
        dest: "/var/tmp/{{ inventory_hostname }}_tech.json"
