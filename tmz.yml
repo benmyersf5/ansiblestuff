@@ -1,0 +1,12 @@
+---
+- name: Set Timezone
+  hosts: servers
+  gather_facts: no
+  become: yes
+  tasks:
+  
+   - name: Set timezone to America/New_York
+     community.general.timezone:
+       name: America/New_York
+ 
+  

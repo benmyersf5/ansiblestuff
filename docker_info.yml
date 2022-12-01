@@ -1,0 +1,44 @@
+---
+- name: Docker info
+  hosts: altair regulus
+  
+  tasks:
+  
+  - name: Get info on docker host
+    docker_host_info:
+        containers: true
+    register: hostInfo
+    
+  - name: Print host info
+    debug:
+      var: hostInfo
+      
+# - name: Container info
+  # hosts: containers
+  # tasks:
+  
+    # - name: Get info on docker container
+      # docker_container_info: 
+        # name: 
+      # register: conInfo
+    
+    # - name: Print container info
+      # debug:
+         # var: conInfo
+    
+- name: Network info
+  hosts: altair regulus
+  
+  tasks:
+
+    - name: Get infos on network
+      community.docker.docker_network_info:
+        name: altair_net
+      register: NetInfo
+      
+    - name: Print network info
+      debug: 
+        var: NetInfo
+        
+      
+    

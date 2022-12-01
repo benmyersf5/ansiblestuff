@@ -1,0 +1,63 @@
+---
+- name: 1) Apt update
+  hosts: servers containers
+  gather_facts: no
+  serial: 3
+  become: yes
+  
+  tasks:
+   - name: apt update
+     apt:
+      update_cache: yes
+      
+- name: 2) Upgrade all packages.
+  hosts: servers containers
+  serial: 3
+  gather_facts: no
+  become: yes
+  
+  tasks:
+   - name: apt upgrade
+     apt:
+       name: "*"
+       state: latest
+
+- name: 3) clean up useless packages.
+  hosts: servers containers
+  serial: 3
+  gather_facts: no
+  become: yes
+  
+  tasks:
+   - name: autoclean 
+     apt:
+       autoclean: yes
+       
+   - name: autoremove
+     apt:
+       autoremove: yes
+       
+- name: 4) apt upgrade & clean up (localhost)
+  hosts: localhost
+  gather_facts: no
+  become: yes
+  connection: local
+  
+  tasks:
+   
+    - name: apt update
+      apt:
+        update_cache: yes 
+   
+    - name: apt upgrade
+      apt:
+       name: "*"
+       state: latest
+      
+    - name: autoclean 
+      apt:
+       autoclean: yes
+       
+    - name: autoremove
+      apt:
+       autoremove: yes  

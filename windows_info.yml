@@ -1,0 +1,16 @@
+---
+- name: Windows Info 
+  hosts: windows
+  tasks:
+  
+  - name: Get whoami information
+    ansible.windows.win_whoami:
+  
+   # - name: Obtain information about a folder
+     # ansible.windows.win_stat:
+       # path: G:\Music_iTunes
+     # register: folder_info
+   
+   # - name: Pring results
+     # debug: 
+       # var: folder_info

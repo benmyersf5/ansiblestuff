@@ -1,0 +1,29 @@
+---
+- name: Create docker networks
+  hosts: dockerHosts
+  gather_facts: no
+  tasks:
+  
+    - name: Create vmnet2 docker network
+      community.docker.docker_network:
+        name: vmnet2
+        driver: ipvlan
+        ipam_config:
+          - subnet: "{{ vmnet2Network }}"
+            gateway: "{{ vmnet2GW }}"
+            iprange: "{{ vmnet2Range }}"
+            aux_addresses:
+              host1: "{{ auxHost1 }}"
+              host2: "{{ auxHost2 }}"      
+    
+    # - name: Create vmnet4 docker network 
+      # community.docker.docker_network:
+        # name: vmnet4
+        # ipam_config:
+          # - subnet: "{{ vmnet4Network }}"
+            # gateway: "{{ vmnet4GW }}"
+            # iprange: "{{ vmnet4Range }}"
+            # aux_addresses:
+              # host1: 10.4.0.1
+              # host2: 10.4.0.2
+              # host3: 10.4.0.3

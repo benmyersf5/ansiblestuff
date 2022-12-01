@@ -1,0 +1,18 @@
+---
+- name: techmint script
+  hosts: servers 
+  gather_facts: no
+  
+  tasks:
+    - name: Run a script using an executable in a non-system path
+      ansible.builtin.script: ~/scripts/techmint_monitor.sh
+      register: results
+    
+    - name: Print results
+      debug:
+        var: results
+        
+    - name: Copy output to file
+      copy:
+       content: "{{ results | to_nice_json(indent=2) }}"
+       dest: "/var/tmp/{{ inventory_hostname }}_tech.json"

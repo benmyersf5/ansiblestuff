@@ -1,0 +1,23 @@
+- name: NGINX ansible web1 and web2
+  hosts: webservers
+  gather_facts: no
+  tasks:
+
+    - name: Get http stats (altair) 
+      community.general.nginx_status_info:
+        url: http://www.altair.local/status/
+        timeout: 20
+      register: altairStats
+    - debug:
+        msg: "{{ altairStats }}"
+      
+    # - name: Get https stats (algol)
+      # community.general.nginx_status_info:
+        # url: http://web.algol.local/status/
+        # timeout: 20
+      # register: algolStats
+    # - debug: 
+        # msg: "{{ algolStats }}"
+
+   
+   

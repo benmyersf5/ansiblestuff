@@ -1,0 +1,12 @@
+---
+- name: playbook for starting and enabling the NetworkManager
+  hosts: regulus
+  gather_facts: no
+  become: yes
+  tasks:
+    
+    - name: start the service
+      ansible.builtin.service:
+        name: NetworkManager
+        state: started
+        enabled: true

@@ -1,0 +1,30 @@
+---
+- name: Install Base
+  hosts: servers
+  gather_facts: no
+  become: yes
+  tasks:
+        
+   - name: apt update
+     apt:
+      update_cache: yes
+    
+   - name: install named (bind v9)
+     apt: 
+      name: bind9 
+      state: present
+   
+   - name: install ntp
+     apt: 
+       name: ntp
+       state: present
+   
+   - name: install mailutils
+     apt: 
+       name: mailutils
+       state: present
+       
+   - name: install vsfp
+     apt: 
+       name: vsftpd
+       state: present
