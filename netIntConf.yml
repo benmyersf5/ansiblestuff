@@ -1,6 +1,6 @@
 ---
-- name: Network interface configuration
-  hosts: servers
+- name: Network interface configuration regulus
+  hosts: regulus
   gather_facts: no
   become: yes
   tasks:
@@ -17,13 +17,13 @@
           - "{{ NS2 }}"
         state: present
         
-    - name: Default Docker network settings 
-      community.general.nmcli: 
-        conn_name: docker0
-        type: bridge
-        ip4: "{{ dockerAddr }}"
-        gw4: "{{ dockerGW }}"
-        state: present
+    # - name: Default Docker network settings 
+      # community.general.nmcli: 
+        # conn_name: docker0
+        # type: bridge
+        # ip4: "{{ dockerAddr }}"
+        # gw4: "{{ dockerGW }}"
+        # state: present
                   
     - name: Add vmnet2 static IP 
       community.general.nmcli:
@@ -42,7 +42,26 @@
          # ip4: "{{ vmnet4Addr }}"
          # gw4: "{{ vmnet4GW }}"
          # state: present
-         
+ 
+- name: Network interface configuration altair
+  hosts: altair
+  gather_facts: no
+  become: yes
+  tasks:   
+   - name: Add host connection and set NS servers. 
+     community.general.nmcli: 
+        conn_name: hostNet
+        mac: "{{ hostMac }}"
+        ifname: "{{ hostIF }}"
+        type: ethernet
+        #ip4: 
+        # - "{{ hostIP }}"
+        # - "{{ vmnet2Addr }}"
+        #gw4: "{{ hostGW }}"
+        #dns4: 
+        #  - "{{ NS1 }}"
+        #  - "{{ NS2 }}"
+        state: present
     
       
       
