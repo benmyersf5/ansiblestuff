@@ -13,10 +13,23 @@
        provider: "{{ provider }}"
      tags: ucs
    
-   - name: remove ucs created in previous task
-     bigip_ucs:
-       ucs: "{{ device_hostname }}.ucs"
-       state: absent
-       provider: "{{ provider }}"
-     tags: ucs
+# - name: Copy ucs to backup dir 
+  # gather_facts: no
+  # hosts: regulus
+  # connection: local
+  # tasks:
+   
+   # - name: copy file
+     # ansible.builtin.copy:
+       # src: /var/tmp/dns1.bigipdevices.local.ucs
+       # dest: /home/myers/backups/gtm/
+       # remote_src: yes 
+        
+   
+   # - name: remove ucs created in previous task
+     # bigip_ucs:
+       # ucs: "{{ device_hostname }}.ucs"
+       # state: absent
+       # provider: "{{ provider }}"
+     # tags: ucs
      
