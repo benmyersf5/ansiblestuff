@@ -1,35 +1,32 @@
 ---
-
-- name: Play 1 Create Qkview
-  gather_facts: no
+- name: Create ucs backup and send it to backup storage
+  gather_facts: yes
   hosts: bigips
   connection: local
+  
+  vars: 
+    ucs_name: "{{ inventory_hostname }}-{{ ansible_date_time.iso8601_basic_short }}.ucs"
+  
   tasks:
    - name: Create ucs file and download
      bigip_ucs_fetch:
        create_on_missing: yes
-       src: "{{ device_hostname }}.ucs"
-       dest: /tmp/{{ device_hostname }}.ucs
+       src: "{{ ucs_name }}"
+       dest: /var/tmp/{{ ucs_name }}
        provider: "{{ provider }}"
-     tags: ucs
-   
-# - name: Copy ucs to backup dir 
-  # gather_facts: no
-  # hosts: regulus
-  # connection: local
-  # tasks:
-   
-   # - name: copy file
-     # ansible.builtin.copy:
-       # src: /var/tmp/dns1.bigipdevices.local.ucs
-       # dest: /home/myers/backups/gtm/
-       # remote_src: yes 
-        
-   
-   # - name: remove ucs created in previous task
-     # bigip_ucs:
-       # ucs: "{{ device_hostname }}.ucs"
-       # state: absent
-       # provider: "{{ provider }}"
-     # tags: ucs
      
+   - name: remove ucs from F5
+     bigip_ucs:
+       ucs: /var/local/ucs/{{ ucs_name }}
+       state: absent
+       provider: "{{ provider }}"
+
+   - name: scp to regulus
+     shell:
+       cmd: scp -i .ssh/id_rsa /var/tmp/*.ucs 10.0.1.150:backups/
+     delegate_to: localhost
+    
+   - name: remove ucs on local machine.
+     file:
+       path: /var/tmp/{{ ucs_name }}
+       state: absent
