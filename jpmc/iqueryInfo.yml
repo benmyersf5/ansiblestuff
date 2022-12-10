@@ -1,5 +1,5 @@
 ---
-- name: Gather GTM iQuery data (test)
+- name: Gather GTM iQuery data
   hosts: bigips
   gather_facts: yes
   tasks: 

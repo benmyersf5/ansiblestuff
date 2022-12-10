@@ -1,12 +1,20 @@
 ---
-- hosts: bigips
-  tasks:
-  - name: Collect all BIG-IP information
-    bigip_device_info:
-      gather_subset:
-        - gtm-pools
-      provider: "{{ provider }}"
-    register: gtmStuff
-    delegate_to: localhost
-  - debug: 
-       msg: "{{ gtmStuff }}"
+- name: Gather GTM iQuery data
+  hosts: bigips
+  gather_facts: yes
+  connection: local
+  tasks: 
+    - name: tmsh show gtm ...
+      bigip_command:
+        commands: 
+         - show gtm wideip
+         - show gtm pool
+         - show gtm server virtual-servers
+        wait_for:
+          - result[0] contains offline
+          - result[1] contains offline
+          - result[2] contains timeout
+          
+        provider: "{{ provider }}"      
+      register: cmdOut
+    - debug: var=cmdOut.stdout_lines
