@@ -1,0 +1,77 @@
+--- 
+- name: BIGIP-DNS virtual-server vmnet2.1
+  hosts: bigips
+  gather_facts: no
+  connection: local
+  
+  tasks: 
+  
+    - name: virtual-server web2
+      bigip_gtm_virtual_server:
+        server_name: vmnet2.1
+        name: web2
+        address: 10.2.0.3
+        port: 80
+        state: present
+        provider: "{{ provider }}"
+    
+    - name: virtual-server weather_app  
+      bigip_gtm_virtual_server:
+        server_name: vmnet2.1
+        name: weather_app
+        address: 10.2.0.4
+        port: 3000
+        state: present
+        provider: "{{ provider }}"
+     
+    - name: virtual-server filez
+      bigip_gtm_virtual_server:
+        server_name: vmnet2.1
+        name: filez
+        address: 10.2.0.5
+        port: 80
+        state: present
+        provider: "{{ provider }}"     
+      
+    - name: virtual-server demo
+      bigip_gtm_virtual_server:
+        server_name: vmnet2.1
+        name: demo
+        address: 10.2.0.6
+        port: 80
+        state: present
+        provider: "{{ provider }}"
+        
+- name: BIGIP-DNS virtual-server vmnet2.2
+  hosts: bigips
+  gather_facts: no
+  connection: local
+  
+  tasks: 
+  
+    - name: virtual-server web1
+      bigip_gtm_virtual_server:
+        server_name: vmnet2.2
+        name: web1
+        address: 10.2.0.131
+        port: 80
+        state: present
+        provider: "{{ provider }}"
+    
+    - name: virtual-server muzik 
+      bigip_gtm_virtual_server:
+        server_name: vmnet2.2
+        name: muzik
+        address: 10.2.0.132
+        port: 80
+        state: present
+        provider: "{{ provider }}"
+     
+    - name: virtual-server portainer
+      bigip_gtm_virtual_server:
+        server_name: vmnet2.2
+        name: portainer
+        address: 10.2.0.133
+        port: 9443
+        state: present
+        provider: "{{ provider }}"     

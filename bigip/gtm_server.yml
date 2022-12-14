@@ -1,0 +1,32 @@
+---
+- name: BIGIP-DNS server object
+  hosts: bigips
+  gather_facts: no
+  connection: local
+  
+  tasks: 
+    - name: Create GSLB server "vmnet2.1"
+      bigip_gtm_server:
+        name: vmnet2.1
+        datacenter: /Common/Jupiter
+        server_type: generic-host
+        link_discovery: disabled
+        virtual_server_discovery: disabled
+        monitors: gateway_icmp
+        devices:
+          - name: vmnet2.1
+            address: 10.2.0.2
+        provider: "{{ provider }}"
+    
+    - name: Create GSLB server "vmnet2.2"
+      bigip_gtm_server:
+        name: vmnet2.2
+        datacenter: /Common/Jupiter
+        server_type: generic-host
+        link_discovery: disabled
+        virtual_server_discovery: disabled
+        monitors: gateway_icmp
+        devices:
+          - name: vmnet2.2
+            address: 10.2.0.130
+        provider: "{{ provider }}"
