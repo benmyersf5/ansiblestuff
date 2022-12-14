@@ -8,11 +8,11 @@
       community.docker.docker_network:
         name: vmnet2
         driver: ipvlan
-        attachable: true
+        driver_options: ipvlan_mode=l2
         ipam_config:
           - subnet: "{{ vmnet2Network }}"
             gateway: "{{ vmnet2GW }}"
-            iprange: "{{ vmnet2Range }}"
+            iprange: "{{ vmnet2Range }}" 
             aux_addresses:
               host1: "{{ vm2auxHost1 }}"
               host2: "{{ vm2auxHost2 }}" 
