@@ -5,7 +5,7 @@
   connection: local
   
   vars: 
-    ucs_name: "{{ inventory_hostname }}-{{ ansible_date_time.iso8601_basic_short }}.ucs"
+    ucs_name: "{{ inventory_hostname }}-{{ ansible_date_time.date }}.ucs"
   
   tasks:
    - name: Create ucs file and download

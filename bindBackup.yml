@@ -1,18 +1,20 @@
 ---
 - name: BIND file copy/backup
-  hosts: localhost regulus
-  gather_facts: no
+  hosts: nameservers
+  gather_facts: yes
   become: yes
+  connection: local
   
   
   vars:
     fileSrc: "/etc/bind/"
     fileDst: "/var/tmp/"
+    fileStore: "/media/thumb/"
+    fileName: "{{ inventory_hostname }}-{{ ansible_date_time.date }}.bindBU.tgz"
   
   tasks:
     
     - name: tar bind files
       ansible.builtin.shell: 
-        cmd: tar -czf {{ fileDst }}{{ inventory_hostname }}.bindBackup.tgz *
+        cmd: tar -czf "{{ fileStore }}""{{ fileName }}" *
         chdir: "{{ fileSrc }}"
-  
